@@ -5,7 +5,12 @@ import click
 from loguru import logger
 
 from llm_engineering.domain.base.nosql import NoSQLBaseDocument
-from llm_engineering.domain.documents import ArticleDocument, PostDocument, RepositoryDocument, UserDocument
+from llm_engineering.domain.documents import (
+    ArticleDocument,
+    PostDocument,
+    RepositoryDocument,
+    UserDocument,
+)
 
 
 @click.command()
@@ -51,12 +56,16 @@ def __export(data_dir: Path) -> None:
     __export_data_category(data_dir, UserDocument)
 
 
-def __export_data_category(data_dir: Path, category_class: type[NoSQLBaseDocument]) -> None:
+def __export_data_category(
+    data_dir: Path, category_class: type[NoSQLBaseDocument]
+) -> None:
     data = category_class.bulk_find()
     serialized_data = [d.to_mongo() for d in data]
     export_file = data_dir / f"{category_class.__name__}.json"
 
-    logger.info(f"Exporting {len(serialized_data)} items of {category_class.__name__} to {export_file}...")
+    logger.info(
+        f"Exporting {len(serialized_data)} items of {category_class.__name__} to {export_file}..."
+    )
     with export_file.open("w") as f:
         json.dump(serialized_data, f)
 
@@ -89,7 +98,9 @@ def __import_data_category(file: Path, category_class: type[NoSQLBaseDocument]) 
     with file.open("r") as f:
         data = json.load(f)
 
-    logger.info(f"Importing {len(data)} items of {category_class.__name__} from {file}...")
+    logger.info(
+        f"Importing {len(data)} items of {category_class.__name__} from {file}..."
+    )
     if len(data) > 0:
         deserialized_data = [category_class.from_mongo(d) for d in data]
         category_class.bulk_insert(deserialized_data)

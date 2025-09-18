@@ -39,15 +39,22 @@ class ContextRetriever:
             f"Successfully extracted the author_full_name = {query_model.author_full_name} from the query.",
         )
 
-        n_generated_queries = self._query_expander.generate(query_model, expand_to_n=expand_to_n_queries)
+        n_generated_queries = self._query_expander.generate(
+            query_model, expand_to_n=expand_to_n_queries
+        )
         logger.info(
             f"Successfully generated {len(n_generated_queries)} search queries.",
         )
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            search_tasks = [executor.submit(self._search, _query_model, k) for _query_model in n_generated_queries]
+            search_tasks = [
+                executor.submit(self._search, _query_model, k)
+                for _query_model in n_generated_queries
+            ]
 
-            n_k_documents = [task.result() for task in concurrent.futures.as_completed(search_tasks)]
+            n_k_documents = [
+                task.result() for task in concurrent.futures.as_completed(search_tasks)
+            ]
             n_k_documents = utils.misc.flatten(n_k_documents)
             n_k_documents = list(set(n_k_documents))
 
@@ -90,17 +97,23 @@ class ContextRetriever:
 
         post_chunks = _search_data_category(EmbeddedPostChunk, embedded_query)
         articles_chunks = _search_data_category(EmbeddedArticleChunk, embedded_query)
-        repositories_chunks = _search_data_category(EmbeddedRepositoryChunk, embedded_query)
+        repositories_chunks = _search_data_category(
+            EmbeddedRepositoryChunk, embedded_query
+        )
 
         retrieved_chunks = post_chunks + articles_chunks + repositories_chunks
 
         return retrieved_chunks
 
-    def rerank(self, query: str | Query, chunks: list[EmbeddedChunk], keep_top_k: int) -> list[EmbeddedChunk]:
+    def rerank(
+        self, query: str | Query, chunks: list[EmbeddedChunk], keep_top_k: int
+    ) -> list[EmbeddedChunk]:
         if isinstance(query, str):
             query = Query.from_str(query)
 
-        reranked_documents = self._reranker.generate(query=query, chunks=chunks, keep_top_k=keep_top_k)
+        reranked_documents = self._reranker.generate(
+            query=query, chunks=chunks, keep_top_k=keep_top_k
+        )
 
         logger.info(f"{len(reranked_documents)} documents reranked successfully.")
 

@@ -2,7 +2,12 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, cast
 
 from llm_engineering.application.networks import EmbeddingModelSingleton
-from llm_engineering.domain.chunks import ArticleChunk, Chunk, PostChunk, RepositoryChunk
+from llm_engineering.domain.chunks import (
+    ArticleChunk,
+    Chunk,
+    PostChunk,
+    RepositoryChunk,
+)
 from llm_engineering.domain.embedded_chunks import (
     EmbeddedArticleChunk,
     EmbeddedChunk,
@@ -59,7 +64,9 @@ class QueryEmbeddingHandler(EmbeddingDataHandler):
 
 
 class PostEmbeddingHandler(EmbeddingDataHandler):
-    def map_model(self, data_model: PostChunk, embedding: list[float]) -> EmbeddedPostChunk:
+    def map_model(
+        self, data_model: PostChunk, embedding: list[float]
+    ) -> EmbeddedPostChunk:
         return EmbeddedPostChunk(
             id=data_model.id,
             content=data_model.content,
@@ -77,7 +84,9 @@ class PostEmbeddingHandler(EmbeddingDataHandler):
 
 
 class ArticleEmbeddingHandler(EmbeddingDataHandler):
-    def map_model(self, data_model: ArticleChunk, embedding: list[float]) -> EmbeddedArticleChunk:
+    def map_model(
+        self, data_model: ArticleChunk, embedding: list[float]
+    ) -> EmbeddedArticleChunk:
         return EmbeddedArticleChunk(
             id=data_model.id,
             content=data_model.content,
@@ -96,7 +105,9 @@ class ArticleEmbeddingHandler(EmbeddingDataHandler):
 
 
 class RepositoryEmbeddingHandler(EmbeddingDataHandler):
-    def map_model(self, data_model: RepositoryChunk, embedding: list[float]) -> EmbeddedRepositoryChunk:
+    def map_model(
+        self, data_model: RepositoryChunk, embedding: list[float]
+    ) -> EmbeddedRepositoryChunk:
         return EmbeddedRepositoryChunk(
             id=data_model.id,
             content=data_model.content,

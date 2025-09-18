@@ -6,7 +6,9 @@ from loguru import logger
 try:
     import boto3
 except ModuleNotFoundError:
-    logger.warning("Couldn't load AWS or SageMaker imports. Run 'poetry install --with aws' to support AWS.")
+    logger.warning(
+        "Couldn't load AWS or SageMaker imports. Run 'poetry install --with aws' to support AWS."
+    )
 
 
 from llm_engineering.domain.inference import Inference
@@ -54,7 +56,9 @@ class LLMInferenceSagemakerEndpoint(Inference):
             },
         }
 
-    def set_payload(self, inputs: str, parameters: Optional[Dict[str, Any]] = None) -> None:
+    def set_payload(
+        self, inputs: str, parameters: Optional[Dict[str, Any]] = None
+    ) -> None:
         """
         Sets the payload for the inference request.
 

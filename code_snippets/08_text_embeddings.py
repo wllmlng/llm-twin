@@ -8,7 +8,11 @@ if __name__ == "__main__":
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     # The sentences to encode.
-    sentences = ["The dog sits outside waiting for a treat.", "I am going swimming.", "The dog is swimming."]
+    sentences = [
+        "The dog sits outside waiting for a treat.",
+        "I am going swimming.",
+        "The dog is swimming.",
+    ]
 
     # 2. Calculate embeddings.
     embeddings = model.encode(sentences)

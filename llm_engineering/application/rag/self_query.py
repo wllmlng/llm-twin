@@ -18,7 +18,11 @@ class SelfQuery(RAGStep):
             return query
 
         prompt = SelfQueryTemplate().create_template()
-        model = ChatOpenAI(model=settings.OPENAI_MODEL_ID, api_key=settings.OPENAI_API_KEY, temperature=0)
+        model = ChatOpenAI(
+            model=settings.OPENAI_MODEL_ID,
+            api_key=settings.OPENAI_API_KEY,
+            temperature=0,
+        )
 
         chain = prompt | model
 
@@ -38,7 +42,9 @@ class SelfQuery(RAGStep):
 
 
 if __name__ == "__main__":
-    query = Query.from_str("I am Paul Iusztin. Write an article about the best types of advanced RAG methods.")
+    query = Query.from_str(
+        "I am Paul Iusztin. Write an article about the best types of advanced RAG methods."
+    )
     self_query = SelfQuery()
     query = self_query.generate(query)
     logger.info(f"Extracted author_id: {query.author_id}")

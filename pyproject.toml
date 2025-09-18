@@ -48,6 +48,7 @@ opik = "^0.2.2"
 ruff = "^0.4.9"
 pre-commit = "^3.7.1"
 pytest = "^8.2.2"
+black = "^25.1.0"
 
 
 [tool.poetry.group.aws.dependencies]
@@ -67,6 +68,8 @@ build-backend = "poetry.core.masonry.api"
 # ----------------------------------
 
 [tool.poe.tasks]
+format = "black ." 
+start = "python tools/run.py"
 # Data pipelines
 run-digital-data-etl-alex = "echo 'It is not supported anymore.'"
 run-digital-data-etl-maxime = "poetry run python -m tools.run --run-etl --no-cache --etl-config-filename digital_data_etl_maxime_labonne.yaml"

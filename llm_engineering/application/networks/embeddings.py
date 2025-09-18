@@ -98,7 +98,9 @@ class EmbeddingModelSingleton(metaclass=SingletonMeta):
         try:
             embeddings = self._model.encode(input_text)
         except Exception:
-            logger.error(f"Error generating embeddings for {self._model_id=} and {input_text=}")
+            logger.error(
+                f"Error generating embeddings for {self._model_id=} and {input_text=}"
+            )
 
             return [] if to_list else np.array([])
 
@@ -127,7 +129,9 @@ class CrossEncoderModelSingleton(metaclass=SingletonMeta):
         )
         self._model.model.eval()
 
-    def __call__(self, pairs: list[tuple[str, str]], to_list: bool = True) -> NDArray[np.float32] | list[float]:
+    def __call__(
+        self, pairs: list[tuple[str, str]], to_list: bool = True
+    ) -> NDArray[np.float32] | list[float]:
         scores = self._model.predict(pairs)
 
         if to_list:

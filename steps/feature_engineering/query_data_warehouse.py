@@ -6,7 +6,13 @@ from zenml import get_step_context, step
 
 from llm_engineering.application import utils
 from llm_engineering.domain.base.nosql import NoSQLBaseDocument
-from llm_engineering.domain.documents import ArticleDocument, Document, PostDocument, RepositoryDocument, UserDocument
+from llm_engineering.domain.documents import (
+    ArticleDocument,
+    Document,
+    PostDocument,
+    RepositoryDocument,
+    UserDocument,
+)
 
 
 @step
@@ -24,12 +30,16 @@ def query_data_warehouse(
         authors.append(user)
 
         results = fetch_all_data(user)
-        user_documents = [doc for query_result in results.values() for doc in query_result]
+        user_documents = [
+            doc for query_result in results.values() for doc in query_result
+        ]
 
         documents.extend(user_documents)
 
     step_context = get_step_context()
-    step_context.add_output_metadata(output_name="raw_documents", metadata=_get_metadata(documents))
+    step_context.add_output_metadata(
+        output_name="raw_documents", metadata=_get_metadata(documents)
+    )
 
     return documents
 
@@ -79,7 +89,9 @@ def _get_metadata(documents: list[Document]) -> dict:
         if "authors" not in metadata[collection]:
             metadata[collection]["authors"] = list()
 
-        metadata[collection]["num_documents"] = metadata[collection].get("num_documents", 0) + 1
+        metadata[collection]["num_documents"] = (
+            metadata[collection].get("num_documents", 0) + 1
+        )
         metadata[collection]["authors"].append(document.author_full_name)
 
     for value in metadata.values():

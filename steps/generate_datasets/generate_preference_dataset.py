@@ -11,7 +11,9 @@ from llm_engineering.domain.types import DataCategory
 
 @step
 def generate_preference_dataset(
-    prompts: Annotated[dict[DataCategory, list[GenerateDatasetSamplesPrompt]], "prompts"],
+    prompts: Annotated[
+        dict[DataCategory, list[GenerateDatasetSamplesPrompt]], "prompts"
+    ],
     test_split_size: Annotated[float, "test_split_size"],
     mock: Annotated[bool, "mock_generation"] = False,
 ) -> Annotated[
@@ -26,18 +28,25 @@ def generate_preference_dataset(
 
     step_context = get_step_context()
     step_context.add_output_metadata(
-        output_name="preference_datasets", metadata=_get_metadata_preference_dataset(datasets)
+        output_name="preference_datasets",
+        metadata=_get_metadata_preference_dataset(datasets),
     )
 
     return datasets
 
 
-def _get_metadata_preference_dataset(datasets: PreferenceTrainTestSplit) -> dict[str, Any]:
+def _get_metadata_preference_dataset(
+    datasets: PreferenceTrainTestSplit,
+) -> dict[str, Any]:
     instruct_dataset_categories = list(datasets.train.keys())
     train_num_samples = {
-        category: instruct_dataset.num_samples for category, instruct_dataset in datasets.train.items()
+        category: instruct_dataset.num_samples
+        for category, instruct_dataset in datasets.train.items()
     }
-    test_num_samples = {category: instruct_dataset.num_samples for category, instruct_dataset in datasets.test.items()}
+    test_num_samples = {
+        category: instruct_dataset.num_samples
+        for category, instruct_dataset in datasets.test.items()
+    }
 
     return {
         "data_categories": instruct_dataset_categories,

@@ -5,7 +5,9 @@ from loguru import logger
 try:
     from datasets import Dataset, DatasetDict, concatenate_datasets
 except ImportError:
-    logger.warning("Huggingface datasets not installed. Install with `pip install datasets`")
+    logger.warning(
+        "Huggingface datasets not installed. Install with `pip install datasets`"
+    )
 
 
 from llm_engineering.domain.base import VectorBaseDocument
@@ -49,7 +51,10 @@ class InstructDataset(VectorBaseDocument):
         data = [sample.model_dump() for sample in self.samples]
 
         return Dataset.from_dict(
-            {"instruction": [d["instruction"] for d in data], "output": [d["answer"] for d in data]}
+            {
+                "instruction": [d["instruction"] for d in data],
+                "output": [d["answer"] for d in data],
+            }
         )
 
 
@@ -59,8 +64,14 @@ class TrainTestSplit(VectorBaseDocument):
     test_split_size: float
 
     def to_huggingface(self, flatten: bool = False) -> "DatasetDict":
-        train_datasets = {category.value: dataset.to_huggingface() for category, dataset in self.train.items()}
-        test_datasets = {category.value: dataset.to_huggingface() for category, dataset in self.test.items()}
+        train_datasets = {
+            category.value: dataset.to_huggingface()
+            for category, dataset in self.train.items()
+        }
+        test_datasets = {
+            category.value: dataset.to_huggingface()
+            for category, dataset in self.test.items()
+        }
 
         if flatten:
             train_datasets = concatenate_datasets(list(train_datasets.values()))

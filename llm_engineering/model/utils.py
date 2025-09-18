@@ -4,7 +4,9 @@ try:
     import boto3
     from botocore.exceptions import ClientError
 except ModuleNotFoundError:
-    logger.warning("Couldn't load AWS or SageMaker imports. Run 'poetry install --with aws' to support AWS.")
+    logger.warning(
+        "Couldn't load AWS or SageMaker imports. Run 'poetry install --with aws' to support AWS."
+    )
 
 from llm_engineering.settings import settings
 
@@ -21,11 +23,15 @@ class ResourceManager:
     def endpoint_config_exists(self, endpoint_config_name: str) -> bool:
         """Check if the SageMaker endpoint configuration exists."""
         try:
-            self.sagemaker_client.describe_endpoint_config(EndpointConfigName=endpoint_config_name)
+            self.sagemaker_client.describe_endpoint_config(
+                EndpointConfigName=endpoint_config_name
+            )
             logger.info(f"Endpoint configuration '{endpoint_config_name}' exists.")
             return True
         except ClientError:
-            logger.info(f"Endpoint configuration '{endpoint_config_name}' does not exist.")
+            logger.info(
+                f"Endpoint configuration '{endpoint_config_name}' does not exist."
+            )
             return False
 
     def endpoint_exists(self, endpoint_name: str) -> bool:

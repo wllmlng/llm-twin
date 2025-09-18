@@ -3,7 +3,12 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 from uuid import UUID
 
-from llm_engineering.domain.chunks import ArticleChunk, Chunk, PostChunk, RepositoryChunk
+from llm_engineering.domain.chunks import (
+    ArticleChunk,
+    Chunk,
+    PostChunk,
+    RepositoryChunk,
+)
 from llm_engineering.domain.cleaned_documents import (
     CleanedArticleDocument,
     CleanedDocument,
@@ -48,7 +53,9 @@ class PostChunkingHandler(ChunkingDataHandler):
 
         cleaned_content = data_model.content
         chunks = chunk_text(
-            cleaned_content, chunk_size=self.metadata["chunk_size"], chunk_overlap=self.metadata["chunk_overlap"]
+            cleaned_content,
+            chunk_size=self.metadata["chunk_size"],
+            chunk_overlap=self.metadata["chunk_overlap"],
         )
 
         for chunk in chunks:
@@ -81,7 +88,9 @@ class ArticleChunkingHandler(ChunkingDataHandler):
 
         cleaned_content = data_model.content
         chunks = chunk_article(
-            cleaned_content, min_length=self.metadata["min_length"], max_length=self.metadata["max_length"]
+            cleaned_content,
+            min_length=self.metadata["min_length"],
+            max_length=self.metadata["max_length"],
         )
 
         for chunk in chunks:
@@ -114,7 +123,9 @@ class RepositoryChunkingHandler(ChunkingDataHandler):
 
         cleaned_content = data_model.content
         chunks = chunk_text(
-            cleaned_content, chunk_size=self.metadata["chunk_size"], chunk_overlap=self.metadata["chunk_overlap"]
+            cleaned_content,
+            chunk_size=self.metadata["chunk_size"],
+            chunk_overlap=self.metadata["chunk_overlap"],
         )
 
         for chunk in chunks:

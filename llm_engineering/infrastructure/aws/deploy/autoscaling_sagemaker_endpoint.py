@@ -151,7 +151,8 @@ class AutoscalingSagemakerEndpoint:
             service_namespace=self.service_namespace,
             resource_id=self.resource_id,
             scalable_dimension=self.scalable_dimension,
-            target_value=self.target_value + 1,  # Example adjustment, should be based on specific use case
+            target_value=self.target_value
+            + 1,  # Example adjustment, should be based on specific use case
             scale_in_cooldown=200,
             scale_out_cooldown=200,
         )

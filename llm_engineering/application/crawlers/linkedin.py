@@ -36,9 +36,15 @@ class LinkedInCrawler(BaseSeleniumCrawler):
                 "LinkedIn scraper requires the {LINKEDIN_USERNAME} and {LINKEDIN_PASSWORD} settings."
             )
 
-        self.driver.find_element(By.ID, "username").send_keys(settings.LINKEDIN_USERNAME)
-        self.driver.find_element(By.ID, "password").send_keys(settings.LINKEDIN_PASSWORD)
-        self.driver.find_element(By.CSS_SELECTOR, ".login__form_action_container button").click()
+        self.driver.find_element(By.ID, "username").send_keys(
+            settings.LINKEDIN_USERNAME
+        )
+        self.driver.find_element(By.ID, "password").send_keys(
+            settings.LINKEDIN_PASSWORD
+        )
+        self.driver.find_element(
+            By.CSS_SELECTOR, ".login__form_action_container button"
+        ).click()
 
     def extract(self, link: str, **kwargs) -> None:
         if self._is_deprecated:
@@ -70,7 +76,8 @@ class LinkedInCrawler(BaseSeleniumCrawler):
         self.driver.get(link)
         time.sleep(5)
         button = self.driver.find_element(
-            By.CSS_SELECTOR, ".app-aware-link.profile-creator-shared-content-view__footer-action"
+            By.CSS_SELECTOR,
+            ".app-aware-link.profile-creator-shared-content-view__footer-action",
         )
         button.click()
 
@@ -92,7 +99,12 @@ class LinkedInCrawler(BaseSeleniumCrawler):
         user = kwargs["user"]
         self.model.bulk_insert(
             [
-                PostDocument(platform="linkedin", content=post, author_id=user.id, author_full_name=user.full_name)
+                PostDocument(
+                    platform="linkedin",
+                    content=post,
+                    author_id=user.id,
+                    author_full_name=user.full_name,
+                )
                 for post in posts
             ]
         )
@@ -135,7 +147,9 @@ class LinkedInCrawler(BaseSeleniumCrawler):
 
         return BeautifulSoup(self.driver.page_source, "html.parser")
 
-    def _extract_posts(self, post_elements: List[Tag], post_images: Dict[str, str]) -> Dict[str, Dict[str, str]]:
+    def _extract_posts(
+        self, post_elements: List[Tag], post_images: Dict[str, str]
+    ) -> Dict[str, Dict[str, str]]:
         """
         Extracts post texts and combines them with their respective images.
 
